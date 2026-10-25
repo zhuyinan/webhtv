@@ -43,6 +43,7 @@ public final class ContinueWatching {
             for (History h : list) {
                 if (arr.length() >= MAX_ITEMS) break;
                 if (h.getVodName() == null || h.getVodName().trim().isEmpty()) continue;   // auto-source noise
+                if (!names.add(h.getVodName().trim())) continue;   // newer entry of the same show wins (list is newest-first)
                 JSONObject o = new JSONObject();
                 o.put("title", title(h));
                 o.put("name", h.getVodName() == null ? "" : h.getVodName());
