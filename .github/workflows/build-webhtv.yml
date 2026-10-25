@@ -21,12 +21,10 @@ jobs:
           python-version: "3.10"
       - name: Verify bundled MPV native assets
         run: bash scripts/verify_mpv_native_assets.sh --require-elf
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-      - name: Install Android packages
+      - name: Install Android packages   # ubuntu-latest ships the SDK at ANDROID_HOME
         run: |
-          yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager "platform-tools" "platforms;android-37.0" "build-tools;37.0.0"
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-37.0" "build-tools;37.0.0"
       - name: Build leanback armv7 debug APK
         run: |
           chmod +x ./gradlew
