@@ -404,6 +404,7 @@ public class History implements Diffable<History> {
     public History save() {
         updateTime = System.currentTimeMillis();
         AppDatabase.get().getHistoryDao().insertOrUpdate(this);
+        com.fongmi.android.tv.utils.ContinueWatching.export();
         return this;
     }
 
