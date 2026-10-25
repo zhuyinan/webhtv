@@ -33,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: webhtv-apk
-          path: app/build/outputs/apk/leanback/*eabi_v7a/debug/*.apk
+          path: app/build/outputs/apk/**/*.apk
