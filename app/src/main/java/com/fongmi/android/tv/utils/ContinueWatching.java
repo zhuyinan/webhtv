@@ -46,6 +46,11 @@ public final class ContinueWatching {
             for (History h : list) {
                 if (arr.length() >= MAX_ITEMS) break;
                 if (h.getVodName() == null || h.getVodName().trim().isEmpty()) continue;   // auto-source noise
+                try {   // same-named music albums are not the show: keep them off the shelf
+                    String sn = VodConfig.get().getSite(h.getSiteKey()).getName();
+                    if (sn != null && (sn.contains("音乐") || sn.toLowerCase().contains("music"))) continue;
+                } catch (Exception ignored) {
+                }
                 if (!names.add(h.getVodName().trim())) continue;   // newer entry of the same show wins (list is newest-first)
                 JSONObject o = new JSONObject();
                 o.put("title", title(h));
