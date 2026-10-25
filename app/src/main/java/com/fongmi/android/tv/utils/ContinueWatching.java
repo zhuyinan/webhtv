@@ -40,6 +40,7 @@ public final class ContinueWatching {
             List<History> list = AppDatabase.get().getHistoryDao()
                     .find(VodConfig.getCid(), System.currentTimeMillis() - Constant.HISTORY_TIME);
             JSONArray arr = new JSONArray();
+            Set<String> names = new HashSet<>();   // one card per show, whatever the source
             for (History h : list) {
                 if (arr.length() >= MAX_ITEMS) break;
                 if (h.getVodName() == null || h.getVodName().trim().isEmpty()) continue;   // auto-source noise
