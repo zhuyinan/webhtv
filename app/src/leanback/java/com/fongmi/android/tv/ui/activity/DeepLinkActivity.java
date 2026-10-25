@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.util.Log;
+
+import com.fongmi.android.tv.api.config.VodConfig;
 import com.fongmi.android.tv.db.AppDatabase;
 
 /**
@@ -20,8 +23,12 @@ public class DeepLinkActivity extends Activity {
             Uri uri = Uri.parse(getIntent().getStringExtra("data"));
             String key = uri.getQueryParameter("key");
             String[] parts = key.split(AppDatabase.SYMBOL, -1);
+            Log.e("DeepLink", "key=" + key + " site=" + parts[0] + " id=" + parts[1]
+                    + " sites=" + VodConfig.get().getSites().size()
+                    + " found=" + VodConfig.get().getSite(parts[0]).getKey());
             VideoActivity.start(this, parts[0], parts.length > 1 ? parts[1] : "", null, null, null, null);
         } catch (Exception e) {
+            Log.e("DeepLink", "failed: " + e);
             startActivity(new Intent(this, HomeActivity.class));
         }
         finish();
