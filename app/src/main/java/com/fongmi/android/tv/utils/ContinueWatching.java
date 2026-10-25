@@ -44,6 +44,7 @@ public final class ContinueWatching {
                 if (arr.length() >= MAX_ITEMS) break;
                 JSONObject o = new JSONObject();
                 o.put("title", title(h));
+                o.put("name", h.getVodName() == null ? "" : h.getVodName());
                 if (notEmpty(h.getVodPic())) o.put("poster", h.getVodPic());
                 o.put("progress", progress(h));
                 o.put("key", h.getKey());

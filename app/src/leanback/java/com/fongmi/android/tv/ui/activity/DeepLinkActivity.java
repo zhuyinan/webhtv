@@ -23,7 +23,7 @@ public class DeepLinkActivity extends Activity {
     private static final long CONFIG_TIMEOUT = 15000;
 
     private final Handler timeout = new Handler(Looper.getMainLooper());
-    private String site, id;
+    private String site, id, name, pic;
     private boolean opened;
 
     @Override
@@ -34,6 +34,8 @@ public class DeepLinkActivity extends Activity {
             String[] parts = uri.getQueryParameter("key").split(AppDatabase.SYMBOL, -1);
             site = parts[0];
             id = parts.length > 1 ? parts[1] : "";
+            name = uri.getQueryParameter("name");
+            pic = uri.getQueryParameter("pic");
         } catch (Exception e) {
             Log.e(TAG, "bad intent: " + e);
             home();
@@ -69,8 +71,12 @@ public class DeepLinkActivity extends Activity {
         timeout.removeCallbacksAndMessages(null);
         Log.e(TAG, "opening detail, sites=" + VodConfig.get().getSites().size()
                 + " found=" + VodConfig.get().getSite(site).getKey());
-        VideoActivity.start(this, site, id, null, null, null, null);
+        VideoActivity.start(this, site, id, empty(name) ? null : name, empty(pic) ? null : pic, null, null);
         finish();
+    }
+
+    private static boolean empty(String s) {
+        return s == null || s.trim().isEmpty();
     }
 
     private void home() {
