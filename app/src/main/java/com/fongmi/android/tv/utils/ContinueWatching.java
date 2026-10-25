@@ -68,8 +68,11 @@ public final class ContinueWatching {
 
     private static String title(History h) {
         String name = h.getVodName() == null ? "" : h.getVodName();
-        String remark = h.getVodRemarks() == null ? "" : h.getVodRemarks();
-        return remark.isEmpty() || remark.equals(name) ? name : name + "·" + remark;
+        String remark = h.getVodRemarks() == null ? "" : h.getVodRemarks().trim();
+        if (remark.isEmpty() || remark.equals(name)) return name;
+        if (remark.matches("\\d+")) return name + "·第" + remark + "集";   // bare episode number
+        if (remark.length() > 16 || remark.contains("[")) return name;      // file-name remarks: name only
+        return name + "·" + remark;
     }
 
     private static int progress(History h) {
