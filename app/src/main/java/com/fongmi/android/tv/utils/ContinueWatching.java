@@ -6,7 +6,7 @@ import android.util.Log;
 import com.fongmi.android.tv.api.config.VodConfig;
 import com.fongmi.android.tv.bean.History;
 import com.fongmi.android.tv.db.AppDatabase;
-import com.fongmi.android.tv.db.Constant;
+import com.fongmi.android.tv.Constant;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
