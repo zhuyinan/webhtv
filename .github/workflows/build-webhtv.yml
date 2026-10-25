@@ -24,7 +24,9 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
       - name: Install Android packages
-        run: sdkmanager "platform-tools" "platforms;android-37.0" "build-tools;37.0.0"
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platform-tools" "platforms;android-37.0" "build-tools;37.0.0"
       - name: Build leanback armv7 debug APK
         run: |
           chmod +x ./gradlew
