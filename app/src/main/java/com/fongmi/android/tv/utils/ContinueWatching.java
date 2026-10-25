@@ -42,6 +42,7 @@ public final class ContinueWatching {
             JSONArray arr = new JSONArray();
             for (History h : list) {
                 if (arr.length() >= MAX_ITEMS) break;
+                if (h.getVodName() == null || h.getVodName().trim().isEmpty()) continue;   // auto-source noise
                 JSONObject o = new JSONObject();
                 o.put("title", title(h));
                 o.put("name", h.getVodName() == null ? "" : h.getVodName());
