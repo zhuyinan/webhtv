@@ -134,12 +134,16 @@ public class App extends Application implements Application.ActivityLifecycleCal
     }
 
     private PackageManager spoofedPm;
+    private PackageManager spoofedPmReal;
 
     /** Subscription jars whitelist the official release signature; answer those queries with it. */
     @Override
     public PackageManager getPackageManager() {
         PackageManager real = hook != null ? hook : getBaseContext().getPackageManager();
-        if (spoofedPm == null || spoofedPm.base() != real) spoofedPm = new com.fongmi.android.tv.utils.SpoofPackageManager(this, real);
+        if (spoofedPm == null || spoofedPmReal != real) {
+            spoofedPmReal = real;
+            spoofedPm = new com.fongmi.android.tv.utils.SpoofPackageManager(this, real);
+        }
         return spoofedPm;
     }
 
