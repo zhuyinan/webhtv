@@ -244,7 +244,7 @@ public class PlayerSetting {
     }
 
     public static boolean isAutoChange() {
-        return Prefers.getBoolean("player_auto_change", true);
+        return Prefers.getBoolean("player_auto_change", false);   // keep the old app behavior: no automatic source jumping
     }
 
     public static void putAutoChange(boolean autoChange) {

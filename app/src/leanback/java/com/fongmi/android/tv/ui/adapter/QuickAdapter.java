@@ -67,9 +67,21 @@ public class QuickAdapter extends RecyclerView.Adapter<QuickAdapter.ViewHolder> 
     public int getBestPosition() {
         int position = 0;
         for (int i = 1; i < mItems.size(); i++) {
-            if (SiteHealthStore.compareVods(mItems.get(i), mItems.get(position)) < 0) position = i;
+            long a = rank(mItems.get(i)), b = rank(mItems.get(position));
+            if (a > b || (a == b && SiteHealthStore.compareVods(mItems.get(i), mItems.get(position)) < 0)) position = i;
         }
         return position;
+    }
+
+    /** Content match first, site health second: a same-named music album must never beat the actual show. */
+    private static long rank(Vod item) {
+        long score = 0;
+        String site = item.getSiteName() == null ? "" : item.getSiteName();
+        String remark = item.getRemarks() == null ? "" : item.getRemarks();
+        if (site.contains("\u97f3\u4e50") || site.toLowerCase().contains("music")) score -= 1000;
+        if (remark.matches(".*\\d+\u96c6.*") || remark.endsWith("\u5168")) score += 500;
+        if (remark.matches("\\d+")) score += 250;
+        return score;
     }
 
     @Override

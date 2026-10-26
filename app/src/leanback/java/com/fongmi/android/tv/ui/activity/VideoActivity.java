@@ -5774,6 +5774,13 @@ public class VideoActivity extends PlaybackActivity implements CustomKeyDownVod.
     }
 
     private void nextSite() {
+        while (mQuickAdapter.getItemCount() > 0) {
+            int position = mQuickAdapter.getBestPosition();
+            Vod item = mQuickAdapter.get(position);
+            String site = item.getSiteName() == null ? "" : item.getSiteName();
+            if (!site.contains("\u97f3\u4e50") && !site.toLowerCase().contains("music")) break;
+            mQuickAdapter.remove(position);   // a same-named music album can never play: never auto-switch to it
+        }
         if (mQuickAdapter.getItemCount() == 0) return;
         int position = mQuickAdapter.getBestPosition();
         Vod item = mQuickAdapter.get(position);
