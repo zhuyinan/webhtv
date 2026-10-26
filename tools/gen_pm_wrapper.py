@@ -63,9 +63,9 @@ for line in open(methods_path):
     ret, name, params, throws = line.split('|')
     ret = simple(ret)
     params = [simple(x) for x in params.split(',') if x]
-    if name == 'getPackageInfo' and params == 'java.lang.String,int':
+    if name == 'getPackageInfo' and params == ['java.lang.String', 'int']:
         continue  # hand-written above
-    plist = [p for p in params.split(',') if p]
+    plist = params
     args = ', '.join('a%d' % i for i in range(len(plist)))
     plist_s = ', '.join('final %s a%d' % (p, i) for i, p in enumerate(plist))
     throws_s = ' throws ' + throws if throws else ''
