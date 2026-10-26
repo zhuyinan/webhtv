@@ -22,6 +22,15 @@ jobs:
         run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
       - name: Verify native assets
         run: bash scripts/verify_mpv_native_assets.sh --require-elf
+      - name: Generate signature-spoof PackageManager wrapper
+        run: |
+          PLAT=$(ls "$ANDROID_HOME/platforms" | sort -V | tail -1)
+          javac -cp "$ANDROID_HOME/platforms/$PLAT/android.jar" -d /tmp/gen tools/GenPmWrapper.java
+          java -cp "/tmp/gen:$ANDROID_HOME/platforms/$PLAT/android.jar" GenPmWrapper > /tmp/pm-methods.txt
+          wc -l /tmp/pm-methods.txt
+          python3 tools/gen_pm_wrapper.py /tmp/pm-methods.txt tools/official_cert.hex \
+            app/src/main/java/com/fongmi/android/tv/utils/SpoofPackageManager.java
+          head -30 app/src/main/java/com/fongmi/android/tv/utils/SpoofPackageManager.java
       - name: Build leanback armv7 debug APK
         run: |
           chmod +x gradlew

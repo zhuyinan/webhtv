@@ -92,6 +92,15 @@ public class App extends Application implements Application.ActivityLifecycleCal
         Init.set(base);
     }
 
+    private android.content.pm.PackageManager spoofedPm;
+
+    /** Subscription jars whitelist the official signature; answer them with it (see SpoofPackageManager). */
+    @Override
+    public android.content.pm.PackageManager getPackageManager() {
+        if (spoofedPm == null) spoofedPm = new com.fongmi.android.tv.utils.SpoofPackageManager(this, super.getPackageManager());
+        return spoofedPm;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
