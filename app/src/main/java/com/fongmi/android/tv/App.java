@@ -92,15 +92,6 @@ public class App extends Application implements Application.ActivityLifecycleCal
         Init.set(base);
     }
 
-    private android.content.pm.PackageManager spoofedPm;
-
-    /** Subscription jars whitelist the official signature; answer them with it (see SpoofPackageManager). */
-    @Override
-    public android.content.pm.PackageManager getPackageManager() {
-        if (spoofedPm == null) spoofedPm = new com.fongmi.android.tv.utils.SpoofPackageManager(this, super.getPackageManager());
-        return spoofedPm;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -142,9 +133,14 @@ public class App extends Application implements Application.ActivityLifecycleCal
         SpiderDebug.log("startup", "background services ready cost=%sms", System.currentTimeMillis() - time);
     }
 
+    private PackageManager spoofedPm;
+
+    /** Subscription jars whitelist the official release signature; answer those queries with it. */
     @Override
     public PackageManager getPackageManager() {
-        return hook != null ? hook : getBaseContext().getPackageManager();
+        PackageManager real = hook != null ? hook : getBaseContext().getPackageManager();
+        if (spoofedPm == null || spoofedPm.base() != real) spoofedPm = new com.fongmi.android.tv.utils.SpoofPackageManager(this, real);
+        return spoofedPm;
     }
 
     @Override
